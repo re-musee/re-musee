@@ -26,8 +26,8 @@ p{
 .toggle-menu-button{ display:none; }   /* ハンバーガーも消す */
 
 .header-site-menu a{
-  font-size:50px;
-  font-weight: 800;
+  font-size:  clamp(48px, 20vw, 300px);
+  
   color:#111;
   text-decoration:none;
 }
