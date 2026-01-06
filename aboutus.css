@@ -23,14 +23,10 @@ img{
   display:block;
 }
 
-p {
-  font-size: clamp(16px, 1.2vw, 56px);
-}
 
 h1{ font-size: clamp(40px, 8vw, 160px); font-weight: 700; letter-spacing: -0.03em; }
 h2{ font-size: clamp(28px, 5vw, 50px); font-weight: 700; letter-spacing: -0.02em; text-align: center; }
 h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
-
 
 
 a{
@@ -475,19 +471,546 @@ hr {
 .feature-text{
   max-width: 60ch; /* 読みやすい行幅（任意） */
 }
+@media(max-width: 400px){
 
-:root{
-  --font-sans: "Montserrat", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+p {
+  font-size: clamp(14px, 1.2vw, 56px);
 }
 
-/* 全体の基本フォント */
-html, body{
-  font-family: var(--font-sans);
-}
+/* =======================
+   HEADER
+======================= */
+.header-logo{ display:none; }
+.toggle-menu-button{ display:none; }   /* ハンバーガーも消す */
 
-/* メニューだけ確実に統一したいなら追い打ち */
-.menu a,
 .header-site-menu a{
-  font-family: var(--font-sans);
+  font-size:50px;
+  font-weight: 800;
+  color:#111;
+  text-decoration:none;
+}
+.header-site-menu a:hover{
+  opacity:.6;
 }
 
+.header-site-menu{
+  color:#111;
+  padding: 0 0 clamp(16px,5vw,60px); /* ← 左右0 */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  line-height:1;
+}
+
+.header-site-menu ul{
+  list-style:none;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:0;   
+  padding-left: 30px;
+  margin-bottom: -10px;
+  margin-top: 20px;
+}
+
+.header-site-menu a{ 
+  color:#111; 
+  font-size: clamp(16px, 4.8vw, 82px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.header-site-menu a:hover{ opacity:.6; }
+
+@media (max-width: 768px) {
+
+  .header-logo{
+    max-width: 400px;
+    margin-top: 480px;/* 520px */
+    white-space: nowrap;
+  }
+            /* ロゴは今回は非表示 */
+  .toggle-menu-button{ display:none; }   /* ハンバーガーも消す */
+
+  .header-site-menu a{
+    font-size:40px;
+    font-weight: 800;
+    color:#000000;
+    text-decoration:none;
+  }
+  .header-site-menu a:hover{
+    opacity:.6;
+
+  }
+
+  .header-site-menu{
+    color:#ffffff;
+    padding: 80px 5px 5px; /* ← 左右0 */
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0px;
+    line-height:0.5;
+  }
+
+  .header-site-menu ul{
+    list-style:none;
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+    padding:0;   
+    margin-bottom: -10px;
+    margin-top: 5px;
+  }
+  .header-site-menu a:hover{ opacity:.6; }
+  .footer {
+    padding-bottom: 30px;
+  }
+}
+
+
+/* =======================
+   MAIN / SECTION COMMON
+======================= */
+
+.main{
+  background:#141414;
+  color:#ffffff;
+  margin-top: 0%;
+}
+
+/* section は横幅いっぱい＋左右余白20px */
+.hero,
+.mv-row,
+.feature{
+  width:100%;
+  box-sizing:border-box;
+  padding-left:20px;
+  padding-right:20px;
+}
+
+/* =======================
+   HERO
+======================= */
+
+.hero{
+  padding-top:72px;
+  padding-bottom:56px;
+  width: 100vw;
+  height: 300px;
+  background:url("aboutus-main.png") center / cover no-repeat;
+  position:relative;
+  overflow:hidden;
+}
+
+/* オーバーレイ */
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    0deg,
+    rgba(0,0,0,.55),
+    rgba(0,0,0,.15)
+  );
+}
+
+/* タイトル */
+.hero-title{
+  position:center;           /* 絶対配置しない */
+  z-index:1;
+  margin:0;
+  font-size:clamp(40px, 16vw, 60px);
+  line-height:1;
+  letter-spacing:-0.05em;
+  text-transform:uppercase;
+}
+
+/* HEROの下の仕切り */
+.hero-divider{
+  width:60px;
+  background:#ffffff66;
+  margin:0 auto 32px;
+  max-width: fit-content;
+  height: auto;
+}
+
+/* =======================
+   Mission / Vision
+======================= */
+
+.mv-row{
+  padding-top:0;
+  padding-bottom:32px;
+}
+
+.mv-col{
+  width:100%;
+  max-width:100%;
+  font-size:13px;
+  line-height:1.8;
+  margin-bottom:24px;
+}
+
+.mv-col:last-child{
+  margin-bottom:0;
+}
+
+.mv-col h3{
+  margin:0 0 4px;
+  font-size:24px;
+  font-weight:700;
+}
+
+.mv-col-left,
+.mv-col-right{
+  margin-top:0;
+  padding-top:0;
+  text-align:left;
+}
+
+/* =======================
+   FEATURE 共通
+======================= */
+
+.feature{
+  padding-top:32px;
+  padding-bottom:40px;
+}
+
+.feature-inner,
+.feature-inner-kotoba{
+  max-width:100%;
+  display:block;
+  position:static;
+  margin-top:0;
+}
+
+/* 画像 */
+.feature-img-wrap{
+  width:100%;
+  max-width:100%;
+  margin:0 0 12px;
+  overflow:hidden;
+}
+
+.feature-img-wrap img{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:cover;
+}
+
+/* テキスト */
+.feature-text{
+  width:100%;
+  max-width:100%;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.feature-text h2{
+  margin:0 0 8px;
+  font-size:18px;
+  font-weight:700;
+}
+
+/* PC用ずらし解除 */
+.feature-hiraku .feature-text-right,
+.feature-tomonimiru .feature-text-left,
+.feature-tunagaru .feature-text-left,
+.feature-takameau .feature-text-right{
+  margin:0;
+  text-align:left;
+}
+
+.feature-kotoba .feature-text-left{
+  max-width:100%;
+  margin:0;
+}
+
+/* 区切り線 */
+.feature hr{
+  margin-top:16px;
+  margin-bottom:0;
+  border:none;
+  border-top:1px solid #ffffff33;
+}
+
+/* =======================
+   FEATURE 個別調整
+======================= */
+
+.feature-tunagaru{
+  margin-top: 40px;
+}
+
+.feature-hiraku .feature-img-wrap{
+  margin-right: 10px;
+}
+
+.feature-hiraku .feature-text{
+  margin-top: 40px;
+}
+
+.feature-tunagaru .feature-text{
+  margin-top: 40px;
+}
+
+.feature-takameau .feature-text{
+  margin-top: 40px;
+}
+
+.feature-takameau .feature-img-wrap{
+  margin-right: 10px;
+}
+
+/* =======================
+   Section02: ともにみる
+======================= */
+
+.feature-tomonimiru{
+  width: 100%;
+}
+
+.feature-tomonimiru .feature-inner{
+  display: block;
+  margin-top: 0;
+}
+
+.feature-tomonimiru .feature-img-wrap{
+  position: static;
+  margin: 0 0 12px;
+}
+
+.feature-tomonimiru .feature-img-wrap img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.feature-tomonimiru .feature-text{
+  position: static;
+  margin-top: 40px;
+  padding: 0;
+  color: #fff;
+}
+
+.feature-tomonimiru .feature-text h2,
+.feature-tomonimiru .feature-text p{
+  color:#fff;
+  text-align: left;
+}
+
+/* =======================
+   SCROLL ANIMATION
+======================= */
+
+.fade-left,
+.fade-right{
+  opacity:0;
+  transform:translateY(20px);
+  transition:all .8s ease-out;
+}
+
+.is-show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* =======================
+   HEADER（SP）
+======================= */
+@media (max-width: 768px) {
+
+  .header-logo{
+    max-width: 400px;
+    margin-top: 480px;/* 520px */
+    white-space: nowrap;
+  }
+            /* ロゴは今回は非表示 */
+  .toggle-menu-button{ display:none; }   /* ハンバーガーも消す */
+
+  .header-inner{
+    background-color: #ffffff;
+  }
+  .header-site-menu a{
+    font-size:40px;
+    font-weight: 800;
+    color:#000000;
+    text-decoration:none;
+  }
+  .header-site-menu a:hover{
+    opacity:.6;
+
+  }
+
+  .header-site-menu{
+    color:#ffffff;
+    padding: 80px 5px 5px; /* ← 左右0 */
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0px;
+    line-height:0.5;
+  }
+
+  .header-site-menu ul{
+    list-style:none;
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+    padding:0;   
+    margin-bottom: -10px;
+    margin-top: 5px;
+  }
+  .header-site-menu a:hover{ opacity:.6; }
+
+  .header-inner{
+    background-color: #ffffff;
+    padding-bottom: 20px;
+  }
+
+}
+
+/* =======================
+   FOOTER（SP）
+======================= */
+
+.footer{
+  background:#f3f3f3;
+  color:#111;
+  padding:32px 16px 24px;
+  border-top:1px solid #e6e6e6;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  box-sizing:border-box;
+}
+
+.footer-site-menu ul{
+  list-style:none;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  padding:0;
+  margin:0;
+}
+
+.footer-site-menu a{
+  color:#111;
+  font-size:12px;
+  text-decoration:none;
+}
+
+.footer-site-menu a:hover{
+  opacity:.6;
+}
+
+.copyright{
+  margin:0;
+  font-size:11px;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+
+@media (max-width: 400px){
+
+  .header-site-menu{
+    color:#000000;
+    padding: 40px 5px 5px;
+    gap:0px;
+    line-height:0.5;
+  }
+
+  .header-site-menu ul{
+    gap:5px;
+    margin-bottom: -10px;
+    margin-top: 5px;
+  }
+
+  .header-site-menu a{
+    font-size:40px;
+    color:#000000;
+  }
+
+  .main{
+    margin-top: 120px;
+  }
+
+  .team-header{
+    margin-top: 100px;
+  }
+
+  .header{
+    padding-top: 40px;
+  }
+
+  .footer{
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px){
+
+  .feature-img-wrap{
+    padding:0;
+    margin:0;
+    width:100%;
+  }
+
+}
+@media (max-width: 768px){
+
+  
+  .feature-img-wrap img{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .feature-tunagaru .feature-img-wrap{
+    max-width: 90%;
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+/* ヘッダーメニュー文字サイズはここで統一 */
+.menu a{
+  font-size: clamp(16px, 4.8vw, 82px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+@media (max-width: 768px){
+  .menu a{
+    font-size: 40px; /* ← indexと同じにしたいならこれ */
+  }
+}
+
+/* ===== ヘッダー（ABOUT US）を index と同じ指定で上書き ===== */
+/* すでに ul に class="menu" が付いてるので .menu a を基準に統一する */
+
+.header-site-menu .menu a{
+  font-size: clamp(16px, 4.8vw, 82px);  /* indexと同じ */
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #111; /* aboutusは白背景なので黒字 */
+}
+
+@media (max-width: 768px){
+  .header-site-menu .menu a{
+    font-size: 40px; /* indexのSPと同じ */
+    color: #111;     /* aboutusは黒字 */
+  }
+}
+
+}
