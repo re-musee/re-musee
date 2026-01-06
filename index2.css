@@ -223,59 +223,79 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
   text-shadow: 0 2px 8px rgba(0,0,0,.65);  /* 文字が沈まないように */
 }
 
-/* スマホ調整（縦並び） */
-/* ======= HERO：スマホ用 ======= */
+/* ======= HERO：スマホ用（ここだけ差し替え） ======= */
 @media (max-width: 768px){
 
-  /* セクション全体 */
+  /* HERO全体 */
   .hero{
     position: relative;
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    height: auto;          /* ← 高さは中身に合わせる */
-    overflow: visible;
-    color: #000;           /* テキストは黒ベース */
-    background: #ffffff;
-  }
-
-  /* 画像（.hero-img-wrap を使っている前提） */
-  .hero-img-wrap img{
-    display: block;
-    width: 100%;
     height: auto;
+    overflow: hidden;
+    background: #ffffff;
+    color: #000;
   }
 
-  /* 大きい ABOUT US を画像の上に重ねる */
-  .hero-title{
+  /* スマホでは上の画像は使わない（文章側の背景に回す） */
+  .hero-img-wrap{
+    display: none;
+  }
+
+  /* ロゴ（remusee-logo.png）はスマホで非表示 */
+  .hero-copy > img{
+    display: none;
+  }
+
+  /* 文章ブロックを「画像背景」にする */
+  .hero-inner{
+    position: relative;
+    inset: auto;
+    display: block;
+    padding: 22px 20px 26px;
+    background-image: url("home-aboutus.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #ffffff;
+    margin: 0%;
+  }
+
+  /* 読みやすさ用：うっすら暗い膜 */
+  .hero-inner::before{
+    content: "";
     position: absolute;
-    left: 50%;
-    top: 16px;                         /* 画像の上の余白はここで調整 */
-    transform: translateX(-50%);
-    margin: 0;
-    font-size: clamp(32px, 12vw, 64px);
-    color: #ffffff;                    /* 画像の上なので白 */
-    text-align: center;
-    z-index: 2;
+    inset: 0;
+    background: rgba(0,0,0,.45);
     pointer-events: none;
   }
 
-  /* 中のコピー部分は画像の「下」に白背景で置く */
-  .hero-inner{
-    position: static;                  /* ← 重ねない */
-    display: block;
-    padding: 16px 20px 24px;
-    box-sizing: border-box;
-    background: #ffffff;
-    color: #000000;
-    text-align: left;
+  /* 文章本体を膜より前に */
+  .hero-copy,
+  .sentence{
+    position: relative;
+    z-index: 1;
   }
 
+  /* いまPC用で grid/scale/transform を当ててるので、スマホではリセット */
   .hero-copy{
+    display: block;
     padding: 0;
+    scale: 1;
   }
 
-  /* リード文が上に食い込まないように上書き */
+  .sentence{
+    transform: none;
+    align-items: initial;
+  }
+
+  .lead{
+    padding-top: 0;
+    padding-bottom: 14px;
+    transform: none;
+  }
+
   .hero-copy .lead{
     position: static;
     margin-top: 0;
@@ -284,55 +304,36 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
   }
 
   .hero-copy p{
-    margin: 8px 0 20px 0;
-    padding-left: 0%;
-    padding-right: 0;
+    margin: 0 0 18px 0;
     line-height: 1.8;
     max-width: none;
     font-size: 14px;
     text-shadow: none;
-    color: #000;
+    color: #fff;
+  }ß
+
+  /* ボタンはそのまま使う（見た目は既存の統一ルールに任せる） */
+  .hero-copy .btn{
+    transform: none;
+    scale: 1;
   }
 
-  .hero-copy{
-    padding: 20px;
-  }
-
-  /* スマホ時：ABOUT US の大きい文字を画像の上に重ねる */
-  @media (max-width: 768px){
-
-    .hero{
-      position: relative;  /* 基準になる箱 */
-    }
-
-    .hero-title-large{
-      position: absolute;
-      top: 185px;              /* 画像の上端からの距離（お好みで調整） */
-      left: 45%;
-      transform: translateX(-50%);
-      margin: 0;
-      font-size: clamp(32px, 15vw, 70px);
-      color: #ffffff;         /* 画像の上なので白 */
-      line-height: 1;
-      pointer-events: none;
-      z-index: 2;             /* 画像より前面に出す */
-      white-space: nowrap;
-    }
-  }
-
-  @media (max-width: 768px){
-
-    .hero{
-      height: auto;          /* スマホは高さ自動でOK */
-    }
-
-    .hero-inner{
-      position: static;      /* スマホでは重ねず、今まで通り下に出す */
-    }
-
-    /* （あなたの元からある hero のスマホ用指定はそのまま残してOK） */
+  /* ABOUT US は概要文の「下」に、黒文字×白背景で置く */
+  .hero-title-large{
+    position: static;
+    display: block;
+    margin: 0;
+    padding: 18px 0 20px;
+    background: #ffffff;
+    color: #000000;
+    text-align: center;
+    font-size: clamp(32px, 12vw, 64px);
+    line-height: 1;
+    pointer-events: none;
+    font-weight: 800;
   }
 }
+
 
 /* ボタン */
 .btn{
@@ -1146,4 +1147,126 @@ a.link-button-a:active,
 
 .blog-more {
   transform: translateX(1vw) translateY(0.5vh);
+}
+
+/* =========================
+   HERO スマホ最終調整
+========================= */
+@media (max-width: 768px){
+
+  /* HERO全体：余白ゼロ */
+  .hero{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* 上の画像は使わない */
+  .hero-img-wrap{
+    display: none;
+  }
+
+  /* ロゴ非表示 */
+  .hero-copy > img{
+    display: none;
+  }
+
+  /* 文章ブロックを全面背景画像に */
+  .hero-inner{
+    position: relative;
+    margin: 0;
+    padding: 24px 20px;
+    background-image: url("home-aboutus.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* 読みやすさ用オーバーレイ（薄め） */
+  .hero-inner::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+  }
+
+  /* 中身は前面へ */
+  .hero-copy,
+  .sentence{
+    position: relative;
+    z-index: 1;
+  }
+
+  /* hero-copy を完全リセット */
+  .hero-copy{
+    display: block;
+    padding: 0;
+    margin: 0;
+    scale: 1;
+    transform: none;
+  }
+
+  .sentence{
+    transform: none;
+  }
+
+  .lead{
+    padding: 0 0 14px;
+    transform: none;
+  }
+
+  .hero-copy p{
+    margin: 0 0 18px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #fff;
+  }
+
+  .hero-copy .btn{
+    transform: none;
+    scale: 1;
+  }
+
+  /* ABOUT US：背景付き・白じゃない */
+  .hero-title-large{
+    position: static;
+    margin: 0;
+    padding: 20px 0 24px;
+    text-align: center;
+
+    background: #ffffff;   /* ← 白じゃなく薄グレー */
+    color: #111;           /* 文字は黒寄り */
+
+    font-size: clamp(32px, 12vw, 64px);
+    font-weight: 800;
+    line-height: 1;
+  }
+}
+/* ===== HERO：スマホで ABOUT US を画像上＆ボタン横に置く ===== */
+@media (max-width: 768px){
+
+  /* いまの「白背景で下に出す」指定を打ち消して、画像上に重ねる */
+  .hero-title-large{
+    position: absolute;
+    z-index: 3;
+
+    /* ★ボタンの右横あたりに置く（必要なら微調整） */
+    left: 150px;     /* ← ここが「横位置」調整ポイント */
+    bottom: 26px;    /* ← ここが「縦位置」調整ポイント */
+
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    color: #ffffff;  /* 画像上なので白が基本 */
+    font-size: clamp(22px, 8vw, 44px);
+    font-weight: 900;
+    line-height: 1;
+    text-align: right;
+    pointer-events: none;
+    white-space: nowrap;
+
+    /* 読みやすさ */
+    text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
 }
