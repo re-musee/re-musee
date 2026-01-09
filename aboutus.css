@@ -205,11 +205,13 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
 
 .feature-hiraku .feature-img-wrap{
   flex:0 0 min(27vw, 500px);
+   
 }
 
 .feature-hiraku .feature-text-right{
   margin-top:50px;
   margin-left:0;
+   text-aligen:start;
 }
 
 /* ======================
@@ -244,6 +246,7 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
 .feature-kotoba .feature-text-left{
   max-width:500px;
   margin-top:-20px;
+   text-align:start;
 }
 
 /* ======================
@@ -272,6 +275,7 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
 
 .feature-takameau .feature-text-right{
   margin-top:-20px;
+   text-align:start;
 }
 
 .feature-img-wrap{
