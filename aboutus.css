@@ -321,3 +321,6 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
   opacity: 1;
   transform: translateX(0);
 }
+
+.h3 {
+   font-size:24px}
