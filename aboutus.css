@@ -87,6 +87,7 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
   height:620px;
   background:url("a-head.png") center / cover no-repeat;
   overflow:hidden;
+  margin-top:20px;
 }
 
 .hero::before{
