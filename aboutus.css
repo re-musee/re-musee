@@ -344,3 +344,16 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
 .feature-takameau h2 {
   text-align: left;
 }
+body{
+  background:#ffffff;
+  color:#000;
+  
+}
+
+button,
+input,
+textarea{
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
