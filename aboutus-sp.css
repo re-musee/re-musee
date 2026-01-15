@@ -43,6 +43,7 @@ p{
   align-items:center;
   gap:10px;
   line-height:1;
+   
 }
 
 .header-site-menu ul{
@@ -52,7 +53,7 @@ p{
   flex-wrap:wrap;
   padding:0;   
   padding-left: 30px;
-  margin-bottom: -10px;
+  margin-bottom: 20px;
   margin-top: 20px;
 }
 
