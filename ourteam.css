@@ -247,6 +247,20 @@ a{
 
 .menu2 a:hover{ opacity:.6; }
 
+body{
+  background:#ffffff;
+  color:#000;
+  
+}
+
+button,
+input,
+textarea{
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
+
 @media (max-width:640px){
   .menu2 a{ font-size:14px; }
 }
