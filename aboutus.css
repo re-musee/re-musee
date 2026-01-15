@@ -322,5 +322,25 @@ h3{ font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
   transform: translateX(0);
 }
 
-.h3 {
-   font-size:24px}
+.feature-text h3 {
+   font-size:18px}
+
+.feature-hiraku h2 {
+  text-align: left;
+}
+
+.feature-tomonimiru h2 {
+  text-align: right;
+}
+
+.feature-kotoba h2 {
+  text-align: left;
+}
+
+.feature-tunagaru h2 {
+  text-align: right;
+}
+
+.feature-takameau h2 {
+  text-align: left;
+}
