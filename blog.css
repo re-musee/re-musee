@@ -318,6 +318,19 @@ text-decoration: none; }
 .blog-card.is-hidden{
   display: none;
 }
+body{
+  background:#ffffff;
+  color:#000;
+  
+}
+
+button,
+input,
+textarea{
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
 
 
 @media (max-width:640px){
@@ -380,4 +393,6 @@ text-decoration: none; }
   body {
     margin: 0;
   }
+
+   
 }
