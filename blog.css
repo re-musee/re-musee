@@ -12,48 +12,39 @@ body{
 /* =======================
    HEADER
 ======================= */
-.header{
-  background-color: #fffff;
-  margin: 0;
+
+.header-site-menu{
   color:#111;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  width: 100vw;
-}
-
-.header-inner h1 {
-  text-align: center;
-  font-size:  clamp(48px, 20vw, 300px);
-  font-family:  "arial", sans-serif;
-  font-weight: 900;
-  font-style: normal;;
-  margin-bottom: 0;
-}
-.header-logo {
-  margin-top: 45vh;
-  margin-left: 3vw;
-  margin-right: 3vw;
-}
-
-.menu{
-  padding-top: 10px;
+  padding: 0 0 clamp(16px,5vw,60px);
   display:flex;
-  flex-wrap:wrap;
-  gap: clamp(5px, 0.5vw, 0px);
-  
-  margin-left: 0;
-  margin-right: 0;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  line-height:1;
+  background-color: #fff;
 }
 
-.menu a{
+.header-site-menu ul{
+  list-style:none;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:0;
+  padding-left: 30px;
+  margin-bottom: -10px;
+  margin-top: 20px;
+}
+
+.header-site-menu a{
+  color:#111;
   font-size: clamp(16px, 4.8vw, 82px);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.02em;
-  color:#fff;
   line-height: 1;
 }
-.menu a:hover{ opacity:.6; }
+.header-site-menu a:hover{ opacity:.6; }
+
 
 @media (max-width: 768px) {
 .header-logo {
@@ -94,41 +85,6 @@ body{
   }
   .header-site-menu a:hover{ opacity:.6; }
 }
-
-.header-logo{ display:none; }
-.toggle-menu-button{ display:none; }
-
-.header-site-menu{
-  color:#111;
-  padding: 0 0 clamp(16px,5vw,60px);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-  line-height:1;
-  background-color: #fff;
-}
-
-.header-site-menu ul{
-  list-style:none;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  padding:0;
-  padding-left: 30px;
-  margin-bottom: -10px;
-  margin-top: 20px;
-}
-
-.header-site-menu a{
-  color:#111;
-  font-size: clamp(16px, 4.8vw, 82px);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.header-site-menu a:hover{ opacity:.6; }
 
 
 /* =======================
