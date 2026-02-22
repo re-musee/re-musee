@@ -123,6 +123,10 @@ a{
 }
 .header-site-menu a:hover{ opacity:.6; }
 
+.header {
+  position: relative;
+  z-index: 1000;
+}
 
 /* =====================================================
    MAIN
