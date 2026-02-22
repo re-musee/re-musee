@@ -45,51 +45,6 @@ a{
 /* =======================
    HEADER
 ======================= */
-.header{
-  background-color: #fffff;
-  margin: 0;
-  color:#111;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  width: 100vw;
-}
-
-.header-inner h1 {
-  text-align: center;
-  font-size:  clamp(48px, 20vw, 300px);
-  font-family:  "arial", sans-serif;
-  font-weight: 900;
-  font-style: normal;;
-  margin-bottom: 0;
-}
-.header-logo {
-  margin-top: 45vh;
-  margin-left: 3vw;
-  margin-right: 3vw;
-}
-
-.menu{
-  padding-top: 10px;
-  display:flex;
-  flex-wrap:wrap;
-  gap: clamp(5px, 0.5vw, 0px);
-  
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.menu a{
-  font-size: clamp(16px, 4.8vw, 82px);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  color:#fff;
-  line-height: 1;
-}
-.menu a:hover{ opacity:.6; }
-
-.header-logo{ display:none; }
-.toggle-menu-button{ display:none; }
 
 .header-site-menu{
   color:#111;
@@ -123,10 +78,6 @@ a{
 }
 .header-site-menu a:hover{ opacity:.6; }
 
-.header {
-  position: relative;
-  z-index: 1000;
-}
 
 /* =====================================================
    MAIN
@@ -297,7 +248,7 @@ textarea{
   margin-right: 1vw;
 }
 
-  .header-site-menu a{
+.header-site-menu a{
     font-size:40px;
     font-weight: 800;
     color:#111;
@@ -308,7 +259,7 @@ textarea{
 
   }
 
-  .header-site-menu{
+.header-site-menu{
     color:#111;
     padding: 40px 5px 5px; /* ← 左右0 */
     display:flex;
