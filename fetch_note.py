@@ -2,10 +2,12 @@ import feedparser
 import json
 import re
 import os
+import urllib.request
 from datetime import datetime
 
 FEED_URL = "https://note.com/remusee/rss"
 POSTS_FILE = "posts.json"
+THUMB_DIR = "thumbs"
 
 CATEGORY_MAP = {
     "EXHIBITION": ["展覧会", "exhibition", "recommend", "展示"],
@@ -27,6 +29,48 @@ def normalize_url(url):
     return url.split("?")[0]
 
 
+def extract_note_id(url):
+    m = re.search(r"/n/([a-z0-9]+)", url)
+    return m.group(1) if m else "unknown"
+
+
+def download_thumb(cdn_url, note_id):
+    """CDN URLの画像をダウンロードしてローカルパスを返す"""
+    if not cdn_url:
+        return ""
+    os.makedirs(THUMB_DIR, exist_ok=True)
+
+    # 拡張子を判定
+    ext = "jpg"
+    lower = cdn_url.lower()
+    if ".png" in lower:
+        ext = "png"
+    elif ".webp" in lower:
+        ext = "webp"
+    elif ".jpeg" in lower or ".jpg" in lower:
+        ext = "jpg"
+
+    local_path = f"{THUMB_DIR}/thumb-{note_id}.{ext}"
+
+    # すでにダウンロード済みならスキップ
+    if os.path.exists(local_path):
+        return local_path
+
+    try:
+        req = urllib.request.Request(
+            cdn_url,
+            headers={"User-Agent": "Mozilla/5.0"}
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            with open(local_path, "wb") as f:
+                f.write(resp.read())
+        print(f"  画像保存: {local_path}")
+        return local_path
+    except Exception as e:
+        print(f"  画像ダウンロード失敗 ({note_id}): {e}")
+        return cdn_url  # 失敗したらCDN URLをそのまま使う
+
+
 def load_existing():
     if os.path.exists(POSTS_FILE):
         with open(POSTS_FILE, encoding="utf-8") as f:
@@ -35,15 +79,24 @@ def load_existing():
 
 
 def parse_date(d):
-    for fmt in ("%Y.%m.%d", "%Y.%m.%d"):
-        try:
-            return datetime.strptime(d, fmt)
-        except ValueError:
-            pass
-    return datetime.min
+    try:
+        return datetime.strptime(d, "%Y.%m.%d")
+    except ValueError:
+        return datetime.min
 
 
 existing = load_existing()
+
+# 既存記事でCDN URLのままのサムネをダウンロードして置換
+updated = False
+for p in existing:
+    if p.get("thumbnail", "").startswith("http"):
+        note_id = extract_note_id(p["url"])
+        local = download_thumb(p["thumbnail"], note_id)
+        if local != p["thumbnail"]:
+            p["thumbnail"] = local
+            updated = True
+
 existing_urls = {normalize_url(p["url"]) for p in existing}
 
 feed = feedparser.parse(FEED_URL)
@@ -57,16 +110,20 @@ for entry in feed.entries:
     tags = [t.term for t in getattr(entry, "tags", [])]
     category = infer_category(entry.title, tags)
 
-    # サムネイル取得（enclosure → description内のimg → 空）
-    thumb = ""
+    # CDN URL取得（enclosure → description内のimg）
+    cdn_thumb = ""
     for enc in getattr(entry, "enclosures", []):
         if enc.get("type", "").startswith("image/"):
-            thumb = enc.get("url", "")
+            cdn_thumb = enc.get("url", "")
             break
-    if not thumb:
+    if not cdn_thumb:
         m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', entry.get("summary", ""))
         if m:
-            thumb = m.group(1)
+            cdn_thumb = m.group(1)
+
+    # ダウンロードしてローカルパスに変換
+    note_id = extract_note_id(entry.link)
+    thumb = download_thumb(cdn_thumb, note_id)
 
     pub = entry.get("published_parsed") or entry.get("updated_parsed")
     date_str = ""
@@ -78,7 +135,7 @@ for entry in feed.entries:
         "title": entry.title,
         "category": category,
         "date": date_str,
-        "excerpt": "",  # 文頭テキストは表示しない
+        "excerpt": "",
         "thumbnail": thumb,
     })
     existing_urls.add(url)
