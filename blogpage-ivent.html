@@ -10,30 +10,12 @@
         <link rel="stylesheet" href="https://use.typekit.net/bwr6ido.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://remusee.base.shop/" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     </head>
-
-<!-- 
-    - **BLOG**
-    
-    カテゴリー分類できる？
-    
-    - イベント
-    - メンバーズBLOG
-    - 展覧会
-
--->
 
     <body>
         <header class="header">
-            <div class="header-inner">
-
-                <a class="header-logo" href="index.html">
-                    <img src="" alt="">
-                </a>
-
-                <button class="toggle-menu-button">
-                </button>
+            <div class="header-inner"></div>
 
                 <nav class="header-site-menu">
           <ul class="menu">
@@ -42,77 +24,36 @@
             <li><a href="./ourteam.html">OURTEAM,</a></li>
             <li><a href="https://lit.link/remusee">SNS,</a></li>
             <li><a href="./blog.html">BLOG,</a></li>
-            <li><a href="https://remusee.base.shop/items/95314879?fbclid=PAVERFWAOad99leHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAaeow72tP8rNYyjRED-QcNDEsTKavzhDMZnL352AeVK5mDtb0afxnoux9SJXqA_aem_vbA6_J7LEs7Ui8Bc7USNAA">PRODUCT</a></li>
+            <li><a href="https://remusee.base.shop/">PRODUCT</a></li>
           </ul>
         </nav>
 
             </div>
         </header>
 
-        <!--
-        drive-download-20251112T013636Z-1-001/hello re-musée.webp
-         drive-download-20251112T013636Z-1-001/MEMBERS.webp
-         drive-download-20251112T013636Z-1-001/note サムネサンプル (1).png 
-         drive-download-20251112T013636Z-1-001/note サムネサンプル.png 
-         drive-download-20251112T013636Z-1-001/noteサムネサンプル (1).png 
-         drive-download-20251112T013636Z-1-001/noteサムネサンプル.png 
-         drive-download-20251112T013636Z-1-001/note表紙(展覧会紹介)_PR_リムゼ.png
-          drive-download-20251112T013636Z-1-001/note表紙サンプル.png 
-          drive-download-20251112T013636Z-1-001/RECOMMEND.webp-->
-
         <main class="main blog-main">
 
   <section class="blog-archive">
-    <!-- 上の見出し＆線 -->
     <header class="blog-archive-head">
       <p class="blog-archive-label">ALL ARTICLES</p>
       <h1 class="blog-archive-title">BLOG</h1>
     </header>
 
-    <!-- カテゴリーボタン -->
-<div class="blog-archive-filter">
-  <a href="blog.html"         class="blog-filter ">ALL</a>
+    <div class="blog-archive-filter">
+  <a href="blog.html"         class="blog-filter">ALL</a>
   <a href="blogpage-ivent.html"   class="blog-filter is-active">EVENT</a>
   <a href="blogpage-members.html" class="blog-filter">MEMBERS BLOG</a>
   <a href="blogpage-work.html" class="blog-filter">EXHIBITION</a>
 </div>
-    <!-- 記事グリッド本体 -->
-    <ul class="blog-card-list">
 
-      <!-- 1 -->
-      <li class="blog-card">
-        <a href="https://note.com/remusee/n/n46cb638a076f">
-          <figure class="blog-card-thumb">
-            <img src="b-helloremusee.png" alt="sample">
-          </figure>
-          <div class="blog-card-meta">
-            <span class="blog-card-cat">EVENT</span>
-            <span class="blog-card-date">2025.08.01</span>
-          </div>
-          <h2 class="blog-card-title">Hello,<br>New re-musée !</h2>
-          <p class="blog-card-excerpt">
-            発足して４年目を迎えた今年
-        リムゼは大規模なリブランディングを実施しました。
-          </p>
-          <span class="blog-card-more">more...</span>
-        </a>
-      </li>
-
-      
-     
-
-    </ul>
+    <ul class="blog-card-list" id="blog-card-list"></ul>
 
   </section>
 
 </main>
 
-
-    <!-- 下の丸いボタン（読み込みボタンみたいなイメージ） -->
     <button class="blog-more-btn">MORE ARTICLES</button>
 
-
-       
     <script src="toggle-menu.js"></script>
 <footer class="footer">
       <nav class="footer-site-menu">
@@ -133,45 +74,57 @@
       <p class="footer-mail"></p>
       <p class="copyright"><small>&copy;re-musée</small></p>
     </footer>
-        <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const cards = Array.from(document.querySelectorAll(".blog-card"));
-  const btn = document.querySelector(".blog-more-btn");
 
-  if (!cards.length || !btn) return;
+<script>
+(async () => {
+  const FILTER = "EVENT"; // null = ALL
+  const INITIAL = 9, STEP = 9;
+  const list = document.getElementById('blog-card-list');
+  const btn  = document.querySelector('.blog-more-btn');
+  let cards = [], visibleCount = 0;
 
-  const INITIAL = 9; // 最初に表示する数
-  const STEP = 9;    // 追加表示する数（全部出したいなら 9999 に）
-
-  let visibleCount = 0;
-
-  // 全部いったん隠す
-  cards.forEach(card => card.classList.add("is-hidden"));
-
-  // n件表示する関数
-  function showUpTo(n){
-    cards.slice(0, n).forEach(card => {
-      card.classList.remove("is-hidden");
-    });
-    visibleCount = n;
-
-    // 全部表示されたらボタンを消す
-    if (visibleCount >= cards.length) {
-      btn.style.display = "none";
-    }
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // 初期表示
-  showUpTo(Math.min(INITIAL, cards.length));
+  function showUpTo(n) {
+    cards.slice(0, n).forEach(c => c.classList.remove('is-hidden'));
+    visibleCount = n;
+    if (btn) btn.style.display = visibleCount >= cards.length ? 'none' : '';
+  }
 
-  // ボタンクリック
-  btn.addEventListener("click", () => {
-    showUpTo(Math.min(visibleCount + STEP, cards.length));
-  });
-});
+  try {
+    const res = await fetch('posts.json');
+    const posts = await res.json();
+    const filtered = FILTER ? posts.filter(p => p.category === FILTER) : posts;
+
+    list.innerHTML = filtered.map(p => `
+      <li class="blog-card is-hidden">
+        <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">
+          <figure class="blog-card-thumb">
+            <img src="${esc(p.thumbnail)}" alt="${esc(p.title)}" loading="lazy">
+          </figure>
+          <div class="blog-card-meta">
+            <span class="blog-card-cat">${esc(p.category)}</span>
+            <span class="blog-card-date">${esc(p.date)}</span>
+          </div>
+          <h2 class="blog-card-title">${esc(p.title)}</h2>
+          <p class="blog-card-excerpt">${esc(p.excerpt)}</p>
+          <span class="blog-card-more">more...</span>
+        </a>
+      </li>
+    `).join('');
+
+    cards = Array.from(list.querySelectorAll('.blog-card'));
+    showUpTo(Math.min(INITIAL, cards.length));
+    if (btn) btn.addEventListener('click', () => showUpTo(Math.min(visibleCount + STEP, cards.length)));
+  } catch(e) {
+    console.error('posts.json の読み込みに失敗しました:', e);
+  }
+})();
 </script>
 
     </body>
-    
-    
 </html>
