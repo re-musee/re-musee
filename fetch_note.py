@@ -9,8 +9,8 @@ POSTS_FILE = "posts.json"
 
 CATEGORY_MAP = {
     "EXHIBITION": ["展覧会", "exhibition", "recommend", "展示"],
-    "MEMBERS BLOG": ["メンバー", "members blog", "membersblog", "member"],
-    "EVENT": ["event", "イベント"],
+    "MEMBERS BLOG": ["メンバー", "members blog", "membersblog", "member", "日常", "大学生"],
+    "EVENT": ["event", "イベント", "活動紹介", "パーティー"],
 }
 
 
@@ -73,15 +73,12 @@ for entry in feed.entries:
     if pub:
         date_str = f"{pub.tm_year}.{pub.tm_mon:02d}.{pub.tm_mday:02d}"
 
-    excerpt = re.sub(r"<[^>]+>", "", entry.get("summary", "")).strip()
-    excerpt = re.sub(r"\s+", " ", excerpt)[:100]
-
     new_posts.append({
         "url": entry.link,
         "title": entry.title,
         "category": category,
         "date": date_str,
-        "excerpt": excerpt,
+        "excerpt": "",  # 文頭テキストは表示しない
         "thumbnail": thumb,
     })
     existing_urls.add(url)
