@@ -15,6 +15,8 @@ CATEGORY_MAP = {
     "EVENT": ["event", "イベント", "活動紹介", "パーティー"],
 }
 
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; re-musee-bot/1.0)"}
+
 
 def infer_category(title, tags):
     text = (title + " " + " ".join(tags)).lower().replace("　", " ")
@@ -34,33 +36,49 @@ def extract_note_id(url):
     return m.group(1) if m else "unknown"
 
 
+def get_ogp_image(article_url):
+    """記事ページからog:imageを取得する（最も確実な方法）"""
+    try:
+        req = urllib.request.Request(article_url, headers=HEADERS)
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")
+        # og:image を探す（属性順序が前後する場合も対応）
+        m = re.search(
+            r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+            html,
+        )
+        if not m:
+            m = re.search(
+                r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+                html,
+            )
+        return m.group(1) if m else ""
+    except Exception as e:
+        print(f"  OGP取得失敗 ({article_url}): {e}")
+        return ""
+
+
 def download_thumb(cdn_url, note_id):
     """CDN URLの画像をダウンロードしてローカルパスを返す"""
     if not cdn_url:
         return ""
     os.makedirs(THUMB_DIR, exist_ok=True)
 
-    # 拡張子を判定
     ext = "jpg"
     lower = cdn_url.lower()
     if ".png" in lower:
         ext = "png"
     elif ".webp" in lower:
         ext = "webp"
-    elif ".jpeg" in lower or ".jpg" in lower:
+    elif ".jpeg" in lower:
         ext = "jpg"
 
     local_path = f"{THUMB_DIR}/thumb-{note_id}.{ext}"
-
-    # すでにダウンロード済みならスキップ
     if os.path.exists(local_path):
         return local_path
 
     try:
-        req = urllib.request.Request(
-            cdn_url,
-            headers={"User-Agent": "Mozilla/5.0"}
-        )
+        req = urllib.request.Request(cdn_url, headers=HEADERS)
         with urllib.request.urlopen(req, timeout=15) as resp:
             with open(local_path, "wb") as f:
                 f.write(resp.read())
@@ -68,7 +86,7 @@ def download_thumb(cdn_url, note_id):
         return local_path
     except Exception as e:
         print(f"  画像ダウンロード失敗 ({note_id}): {e}")
-        return cdn_url  # 失敗したらCDN URLをそのまま使う
+        return ""
 
 
 def load_existing():
@@ -86,17 +104,6 @@ def parse_date(d):
 
 
 existing = load_existing()
-
-# 既存記事でCDN URLのままのサムネをダウンロードして置換
-updated = False
-for p in existing:
-    if p.get("thumbnail", "").startswith("http"):
-        note_id = extract_note_id(p["url"])
-        local = download_thumb(p["thumbnail"], note_id)
-        if local != p["thumbnail"]:
-            p["thumbnail"] = local
-            updated = True
-
 existing_urls = {normalize_url(p["url"]) for p in existing}
 
 feed = feedparser.parse(FEED_URL)
@@ -109,21 +116,12 @@ for entry in feed.entries:
 
     tags = [t.term for t in getattr(entry, "tags", [])]
     category = infer_category(entry.title, tags)
-
-    # CDN URL取得（enclosure → description内のimg）
-    cdn_thumb = ""
-    for enc in getattr(entry, "enclosures", []):
-        if enc.get("type", "").startswith("image/"):
-            cdn_thumb = enc.get("url", "")
-            break
-    if not cdn_thumb:
-        m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', entry.get("summary", ""))
-        if m:
-            cdn_thumb = m.group(1)
-
-    # ダウンロードしてローカルパスに変換
     note_id = extract_note_id(entry.link)
-    thumb = download_thumb(cdn_thumb, note_id)
+
+    # OGPで画像URL取得 → ダウンロード
+    print(f"処理中: {entry.title[:40]}")
+    cdn_url = get_ogp_image(entry.link)
+    thumb = download_thumb(cdn_url, note_id)
 
     pub = entry.get("published_parsed") or entry.get("updated_parsed")
     date_str = ""
